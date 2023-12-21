@@ -1,0 +1,499 @@
+{% extends 'store/base.html' %}
+{% load static %}
+
+<div><img  src="{% static 'images/logos/couverture.jpg' %}"  width="100%" alt="B-Jerseys " style="margin-bottom: 0px;"></div>
+{% block content %}
+
+    <!-- Font Awesome -->
+    <div class="image-container">
+        <a href="https://www.instagram.com/bjerseys_store/" target="_blank" class="instagram-icon">
+            <img src="{% static 'images/logos/instagram.png' %}" alt="Instagram">
+        </a>
+        <img src="{% static 'images/logos/couverture.jpg' %}" alt="B-Jerseys">
+        
+    </div>
+    <style>
+        .image-container {
+            position: relative;
+            width: 100%;
+        }
+    
+        .image-container:hover img {
+            opacity: 0.8;
+        }
+    
+        .image-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: opacity 0.3s ease-in-out;
+        }
+        
+        .instagram-icon:hover img {
+            opacity: 2;
+            transform: scale(1.1);
+        }
+        .instagram-icon {
+            position: absolute;
+            top: 80%;
+            left: 5%;
+            z-index: 1; /* Ensures the icon appears above the image */
+            transition: transform 0.3s ease;
+        }
+    
+        .instagram-icon img {
+            width: 5%; /* Adjust the width and height as needed */
+            height: auto;
+        }
+    </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    
+    <div style="margin-top: 10px;">
+        <img  src="{% static 'images/logos/logo3.jpg' %}"  width="100%" alt="B-Jerseys " style="margin-bottom: 0px;">
+    </div>
+    <br>
+    
+   
+    
+    
+    
+
+    <div class="row justify-content-center align-items-center" >
+        {% for category in categories %}
+        
+        <a href="{% url 'store:categories' categorie=category %}" class="col-lg-6 col-md-6 col-6 mb-4">
+            <div class="category-container" style="background-image: url('{% static 'images/logos/'|add:category|add:'.jpg' %}');">
+                
+                <img class="category-image" src="{% static 'images/logos/'|add:category|add:'.png' %}" alt="{{ category }}">
+                <div class="category-details" >
+                    <h4  class="category-name" >{{ category}}</h4>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+
+        <a href="{% url 'store:categories' categorie="World Cup" %}" class="col-lg-6 col-md-6 col-6 mb-4">
+            <div class="category-container" style="background-image: url('{% static 'images/logos/World Cup.jpg' %}');">
+                <img class="category-image" src="{% static 'images/logos/World Cup.png' %}" alt="{{ category }}">
+                <div class="category-details" >
+                    <h4  class="category-name" >World Cup</h4>
+                </div>
+            </div>
+        </a>
+        <a href="{% url 'store:categories' categorie="Euro 2024" %}" class="col-lg-6 col-md-6 col-6 mb-4">
+            <div class="category-container" style="background-image: url('{% static 'images/logos/Euro.jpg' %}');">
+                <img class="category-image" src="{% static 'images/logos/Euro.png' %}" alt="Euro 2024">
+                <div class="category-details" >
+                    <h4  class="category-name" >Euro 2024</h4>
+                </div>
+            </div>
+        </a>
+        
+    </div>
+    <style>
+        .category-container {
+        padding: 15px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100px;
+        
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: #f1f1f1;
+        justify-content: center; 
+        align-items: center;
+         
+
+        background-size: cover;
+        opacity: 1;
+        transition: opacity 0.3s;
+    }
+    .category-container:hover {
+        opacity: 0.5;
+    }
+    .category-details {
+    position: absolute;
+    flex-direction: column;
+        justify-content: center;
+        
+        }
+    .category-image {
+        
+        
+        height: 90px; 
+  object-fit: contain; 
+  width: 60px;
+        
+    }
+  
+
+  
+    .category-name {
+        font-family: Georgia, serif;
+        font-size: 16px;
+        font-weight: bold;
+        text-align: center;
+        color: #f1f1f1;
+        background: #000;
+        margin-top: 70px;
+        
+    }
+    </style>
+    <br>
+    <h3 align="middle" style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">Trending Clubs</h3>
+    <div class="row justify-content-center align-items-center">
+        {% for categorie,clubs in data_clubs %}
+        {% for club in clubs %}
+        <a href="{% url 'store:team' club_name=club %}" class="col-lg-2 col-md-3 col-4 mb-3"> <!-- Adjust the col classes for spacing -->
+            <div class="club-container">
+                    {% if categorie == "Worldwide Jerseys" %}
+                    <img class="club-image" src="{% static 'images/'|add:categorie|add:'/'|add:club|add:'.png' %}" alt="{{ club }}">
+                    {% else %}
+                    <img class="club-image" src="{% static 'images/'|add:categorie|add:'/'|add:club|add:'.jpg' %}" alt="{{ club }}">
+                    {% endif %}
+               
+                <div class="club-details">
+                    <h4 class="club-name" align="middle">{{ club }}</h4>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+        {% endfor %}
+        
+    </div>
+    <br>
+    <h3 align="middle" style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">Trending Teams</h3>
+    <div class="row justify-content-center align-items-center">
+        {% for team in teams %}
+        <a  href="{% url 'store:team' club_name=team %}" class="col-lg-2 col-md-3 col-4 mb-3"> 
+            <div class="club-container">
+                <img class="club-image" src="{% static 'images/World Cup/'|add:team|add:'.jpg' %}" alt="{{ team }}">
+                <div class="club-details">
+                    <h4 class="club-name" align="middle">{{ team }}</h4>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+        
+    </div>
+    <style>
+        .club-container {
+            padding: 5px;
+            
+            background-size: cover;
+            width: 100%;
+            height: 50px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: var(--border-radius-medium);
+            position: relative;
+            overflow: hidden;
+            background-color: #edebeb;
+        }
+        .club-container:hover {
+    background-color: #e5e5e5;
+    color: black;
+    border-color: var(--primary-color);
+        border-width: 5px;
+}
+.club-details {
+    position: absolute;
+        bottom: 0;
+        right: 0;
+        left: 0;
+        
+        transition: all 0.3s ease;
+        }
+
+        .club-container:hover .club-image {
+        transform: scale(1.05);
+        }
+        .club-image {
+            height: 30px;
+            object-fit: contain;
+            border-radius: var(--border-radius-medium);
+        display: block;
+        margin: auto;
+        transition: all 0.3s;
+        }
+        .club-name {
+            font-size: 12px;
+            font-weight: bold;
+            color: rgb(0, 0, 0);
+            text-decoration: none;
+            margin: auto;
+        }
+        
+        
+    </style>
+    <br>
+    <h3 align="middle" style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">Popular Jerseys</h3>
+    <div class="row justify-content-center align-items-center">
+        {% for product in popular_products %}
+        <a href="{{ product.get_absolute_url }}" class="col-lg-3 col-md-6 col-6 mb-3">
+            <div class="services-thumb">
+                <img src="{{ product.photo.url }}" class="services-image img-fluid" alt="">
+
+                <div class="services-info ">
+                    <h4 class="mb-0" align="middle">{{ product.club.name }}</h4>
+                    <h3 class="mb-0" align="middle">{{ product.season }} {{ product.type }}</h3>
+                    <div class="services-thumb-price" align="middle">{{ product.price }}$</div>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+            <style>
+                .services-thumb {
+                    background-size: cover;
+        width: 100%;
+        height: 280px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: var(--border-radius-medium);
+        position: relative;
+        overflow: hidden;
+        }
+
+        .services-thumb:hover .services-info {
+        border-color: var(--primary-color);
+        border-width: 5px;
+        }
+
+        .services-thumb:hover .services-image {
+        transform: scale(1.05);
+        }
+
+        .services-image {
+        border-radius: var(--border-radius-medium);
+        display: block;
+        margin: auto;
+        transition: all 0.3s;
+        }
+
+        .services-thumb-price {
+            color: rgb(61, 61, 61);
+        font-size: 16px;
+        font-weight: bold;
+        }
+        .services-info {
+
+        position: absolute;
+        background-color: rgb(255, 255, 255);
+        bottom: 0;
+        right: 0;
+        left: 0;
+        
+        transition: all 0.3s ease;
+        
+        }
+
+        .services-info h4 {
+        color: rgb(0, 0, 0);
+        font-size: 18px;
+        font-weight: bold;
+        }
+        .services-info h3 {
+        color: rgb(164, 164, 164);
+        font-size: 16px;
+        font-weight: bold;
+        }
+        
+        </style>
+        
+    </div>
+    <h3 align="middle" style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">Special Jerseys</h3>
+    <div class="row justify-content-center align-items-center">
+        {% for product in special_products %}
+        <a href="{{ product.get_absolute_url }}" class="col-lg-3 col-md-6 col-6 mb-3">
+            <div class="services-thumb">
+                <img src="{{ product.photo.url }}" class="services-image img-fluid" alt="">
+
+                <div class="services-info ">
+                    <h4 class="mb-0" align="middle">{{ product.club.name }}</h4>
+                    <h3 class="mb-0" align="middle">{{ product.season }} {{ product.type }}</h3>
+                    <div class="services-thumb-price" align="middle">{{ product.price }}$</div>
+                </div>
+            </div>
+        </a>
+        {% endfor %}
+            
+        
+    </div>
+    <h3 align="middle" style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">Players - Career in Jerseys</h3>
+    <div class="row justify-content-center align-items-center" >
+        <a href="{% url 'store:categories' categorie="Lionel Messi" %}" class="col-lg-6 col-md-6 col-6 mb-4">
+            <div class="category-container" style="background-image: url('{% static 'images/logos/messi.jpg' %}');">
+                
+                <img class="category-image" src="{% static 'images/logos/Lionel Messi.png' %}" alt="Lionel Messi ">
+                <div class="category-details" >
+                    <h4  class="category-name" >Lionel Messi</h4>
+                </div>
+            </div>
+        </a>
+
+    <a href="{% url 'store:categories' categorie="Cristiano Ronaldo" %}" class="col-lg-6 col-md-6 col-6 mb-4">
+        <div class="category-container" style="background-image: url('{% static 'images/logos/ronaldo.jpg' %}');">
+            
+            <img class="category-image" src="{% static 'images/logos/Cristiano Ronaldo.png' %}" alt="Cristiano Ronaldo">
+            <div class="category-details" >
+                <h4  class="category-name" >Cristiano Ronaldo</h4>
+            </div>
+        </div>
+    </a>
+    
+    </div>
+    <br>
+    <div class="row ">
+        <div class="col-lg-3 col-md-6 col-6">
+            <div class="d-flex align-items-center bg-light mb-2" style="padding: 10px;">
+                <h1 class="fa fa-check text-primary m-0 mr-3"></h1>
+                <h5 class="font-weight-semi-bold m-0">&nbsp;&nbsp;Quality Product</h5>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-6">
+            <div class="d-flex align-items-center bg-light mb-2" style="padding: 10px;">
+                <h1 class="fa fa-shipping-fast text-primary m-0 mr-2"></h1>
+                <h5 class="font-weight-semi-bold m-0">&nbsp;&nbsp;Free Shipping</h5>
+            </div>
+        </div>
+        <div class="col-lg-3 col-6">
+            <div class="d-flex align-items-center bg-light mb-2" style="padding: 10px;">
+                <h1 class="fas fa-exchange-alt text-primary m-0 mr-3"></h1>
+                <h5 class="font-weight-semi-bold m-0">&nbsp;&nbsp;14-Day Return</h5>
+            </div>
+        </div>
+        <div class="col-lg-3 col-6">
+            <div class="d-flex align-items-center bg-light mb-2" style="padding: 10px; ">
+                <h1 class="fa fa-phone-volume text-primary m-0 mr-3"></h1>
+                <h5 class="font-weight-semi-bold m-0">&nbsp;&nbsp; 24/7 &nbsp;Support</h5>
+            </div>
+        </div>
+    </div>
+    <hr>
+    
+    <div class="site-footer">
+        
+        <h4>About Us</h4>
+        <div>
+            At B-Jerseys, we pride ourselves on offering a diverse selection of supporters replica jerseys, 
+            ensuring that followers of all teams can find their perfect fit without breaking the bank.
+            Our goal is to provide an extensive collection of replica jerseys that are both cost-effective and tailored to meet the needs of every fan.
+            Whether you're searching for jerseys of popular soccer clubs or national teams, we have a wide range of options to suit every preference and budget.
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-6 mb-3">
+                <h3>Contact Us</h3>
+                <div>
+                    <a><img src="{% static 'images/logos/mail.png' %}" alt="gmail"  style="height: 30px; margin-right: 15px;"></a>
+                    <a href="mailto:bjerseys01@gmail.com">bjerseys01@gmail.com</a>
+                </div>
+                <div class="row justify-content-center">
+                    <div class="col-5">
+                        <hr class="bg-white">
+                    </div>
+                    <div class="col-2" style="text-align: center;">or</div>
+                    <div class="col-5">
+                        <hr class="bg-white">
+                    </div>
+                </div>
+                
+                
+                <form method="post">
+                    {% csrf_token %}
+                    <!-- Your contact form fields go here -->
+                    <input type="text" name="name" placeholder="Your Name" required>
+                    <input type="email" name="email" placeholder="Your Email" required>
+                    <textarea name="message" placeholder="Your Message" required></textarea>
+                    <button type="submit" name="contact_us"><strong> Send</strong></button>
+                </form>
+            </div>
+            <div class="col-lg-6 col-md-6 col-6 mb-3">
+                <h3>Social Links</h3>
+                <div class="social-icons">
+                    <a href="https://www.instagram.com/bjerseys_store/" target="_blank" >
+                        <img src="{% static 'images/logos/instagram.png' %}" alt="instagram" class="social-logo" style="margin-right: 5px;">
+                     </a>
+                    <a href="" >
+                        <img src="{% static 'images/logos/facebook.png' %}" alt="facebook" class="social-logo" style="margin-left: 5px;">
+                    </a>
+                </div>
+                <img src="{% static 'images/logos/logo.png' %}"  width="60%" style="margin-top: 30px;" alt="bjerseys">
+                <p style="margin-top: 20px; "><a href="{% url 'store:privacy'%}" type="button" target="_blank" name="privacy"> Privacy Policy</a>&nbsp; &nbsp;|&nbsp;
+                    <a href="{% url 'store:terms_conditions'%}" type="button" target="_blank" name="terms_conditions">Terms and Conditions</a>
+                    <br>B-Jerseys © 2023  All Rights Reserved</p>
+            </div>
+            
+            
+        </div>
+        
+    </div>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <style>
+        
+.site-footer {
+    background-color: #333333;
+    color: #fff;
+    padding: 20px ;
+    text-align: center;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-around;
+}
+
+.contact-form {
+    flex: 1;
+    max-width: 400px;
+}
+
+.contact-form h3,
+
+
+input[type="text"],
+input[type="email"],
+textarea,
+button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #fff;
+    border-radius: 5px;
+}
+
+
+button {
+    background-color: #ffffff;
+    color: #333;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #ddd;
+}
+
+.social-logo{
+    border-radius: 50%; 
+    width: 50px; 
+    height: 50px; 
+    margin: 0 5px; /* Adjust margin for spacing */
+    opacity: 1;
+        transition: opacity 0.3s;
+}
+.social-logo:hover {
+    opacity: 0.7; /* Scale the icon slightly on hover */
+} 
+.social-icons a {
+    display: inline-block;
+}
+
+
+
+
+/* Adjust icon sizes if needed */
+
+    </style>
+{% endblock content %}
+

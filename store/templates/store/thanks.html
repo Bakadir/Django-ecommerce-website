@@ -1,0 +1,82 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://fonts.googleapis.com/css?family=Lato:300,400|Montserrat:700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+</head>
+<body>
+
+    <div class="main-content">
+        <a href="{% url 'store:home' %}"><img class="logo-image" src="{% static 'images/logos/logo.png' %}" width="130px" height="60px"  alt="bjerseys"></a>
+        <h1 style="font-size: 50px;">THANK YOU!</h1>
+        <i class="fa fa-check main-content__checkmark" id="checkmark" ></i>
+        <p class="main-content__body" data-lead-id="main-content-body">
+            We are getting started on your order right away. 
+            <br>
+            An order confirmation email will arrive in your inbox shortly.
+            <br>
+            Thank you for choosing B-Jerseys! 
+        </p>
+        <a href="{% url 'store:home' %}" class="back-home-button">Back to Home</a>
+    </div>
+
+    <footer class="site-footer" id="footer">
+        <p class="site-footer__fineprint" id="fineprint">B-Jerseys © 2023 </p>
+    </footer>
+</body>
+</html>
+<style>
+    body {
+        font-family: 'Lato', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f8f8f8;
+    }
+
+    .main-content {
+        text-align: center;
+        margin: 30px ;
+    }
+
+    .fa-check {
+        margin-top: 0px;
+        color: #4CAF50;
+        font-size: 150px;
+    }
+
+    
+
+    .site-footer {
+        background-color: #fff;
+        padding: 20px;
+        text-align: center;
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+    }
+
+    .site-footer__fineprint {
+        color: #666;
+        font-size: 14px;
+        margin: 0;
+    }
+
+    .back-home-button {
+        display: inline-block;
+        padding: 10px 20px;
+        text-decoration: none;
+        background-color: #333;
+        color: #fff;
+        border-radius: 4px;
+        margin-top: 20px;
+    }
+
+    .back-home-button:hover {
+        background-color: #555;
+    }
+</style>

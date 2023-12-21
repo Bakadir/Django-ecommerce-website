@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>B-Jerseys</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
+    
+    <!-- Bootstrap JS and jQuery -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</head>
+
+<br>
+<br>
+<nav class="navbar navbar-expand-lg bg-body-tertiary shadow">
+    <div class="container-fluid">
+      <a>
+        <button id="sidebar-toggler" class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar"
+                aria-controls="sidebar" aria-expanded="false" aria-label="Toggle sidebar">
+                <span class="navbar-toggler-icon"></span>
+        </button>
+      </a>
+        <a  href="{% url 'store:home' %}" >
+          <img class="logo-image" src="{% static 'images/logos/logo.png' %}"  width="90px" height="40px" alt="bjerseys">
+        </a>
+        <a  type="button" role="button"  class="btn btn-outline-secondary" align="right"
+          {% if request.user.is_authenticated %} href="{% url 'store:basket' %}" {% else %} href="{% url 'store:authentication' %}" {% endif %}>
+                  <div id="cart-total" class="d-inline-flex">
+                    {{cartItems}}
+                  </div>
+              
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart3" viewBox="0 0 16 16">
+                  <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+                </svg>
+              Cart
+        </a>
+    </div>
+    
+  </nav>
+  <style>
+    .logo-image {
+        background-color: transparent;
+        transition: transform 0.3s ease;
+    }
+
+    .logo-image:hover {
+        transform: scale(1.25); /* Scale up the image on hover */
+    }
+    .navbar {
+    position: fixed; /* Fixed position */
+    top: 0;
+    width: 100%;
+    z-index: 1; /* Add a higher z-index value to bring it to the front */
+}
+
+</style>
+  <div class="container-fluid">
+    <div class="row">
+      <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+        <div class="sidebar-sticky">
+          <div class="login-logout-section" >
+            {% if request.user.is_authenticated %}
+                <a >
+                    <img src="{% static 'images/logos/user.png' %}" alt="user icon" style="width: 15px;height: 15px; ">
+                    <span>: {{ username }}</span>
+                </a>
+                <a href="{% url 'store:logout_request' %}" align="right" >Logout</a>
+            {% else %}
+            <a type="button" role="button" id="connexion-btn" class="btn btn-outline-secondary login-button" href="{% url 'store:authentication' %}">Login</a>
+            {% endif %}
+        </div>
+        <div class="scrollable-sidebar-content">
+          <ul class="nav flex-column">
+           
+          <li class="nav-item">
+            <a class="nav-link active" href="{% url 'store:special' %}">
+                <img src="{% static 'images/logos/popular.png' %}" alt="Popular Jerseys">
+                <span>Special Editions</span>
+            </a>
+          </li>
+            <h6 style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">Leagues</h6>
+            <li class="nav-item">
+                <a class="nav-link active" href="{% url 'store:categories' categorie='Premier League' %}">
+                    <img src="{% static 'images/logos/Premier League.png' %}" alt="Premier League">
+                    <span>Premier League</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link active" href="{% url 'store:categories' categorie='La Liga' %}">
+                  <img src="{% static 'images/logos/La Liga.png' %}" alt="La Liga">
+                  <span>La Liga</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link active" href="{% url 'store:categories' categorie='Serie A' %}">
+                    <img src="{% static 'images/logos/Serie A.png' %}" alt="Serie A">
+                    <span>Serie A</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-link active" href="{% url 'store:categories' categorie='Bundesliga' %}">
+                <img src="{% static 'images/logos/Bundesliga.png' %}" alt="Bundesliga">
+                <span>Bundesliga</span>
+              </a>
+            </li>
+            
+            <li class="nav-item">
+                <a class="nav-link active" href="{% url 'store:categories' categorie='Ligue 1' %}">
+                    <img src="{% static 'images/logos/Ligue 1.png' %}" alt="Ligue 1">
+                    <span>Ligue 1</span>
+                </a>
+            </li>
+            
+            <li class="nav-item">
+                <a class="nav-link active" href="{% url 'store:categories' categorie='World Cup' %}">
+                    <img src="{% static 'images/logos/World Cup.png' %}" alt="World Cup 2022">
+                    <span>World Cup 2022</span>
+                </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="{% url 'store:categories' categorie='Euro 2024' %}">
+                  <img src="{% static 'images/logos/Euro.png' %}" alt="Euro 2024">
+                  <span>Euro 2024 Jerseys</span>
+              </a>
+          </li>
+            <li class="nav-item">
+                <a class="nav-link active" href="{% url 'store:categories' categorie='Worldwide Jerseys' %}">
+                    <img src="{% static 'images/logos/Worldwide Jerseys.png' %}" alt="worldwide Jerseys">
+                    <span>Worldwide Jerseys</span>
+                </a>
+            </li>
+            <h6 style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">Teams</h6>
+            <li class="nav-item">
+              <a class="nav-link active" href="{% url 'store:team' club_name='Real Madrid' %}">
+                  <img src="{% static 'images/La Liga/Real Madrid.jpg' %}" alt="Real Madrid">
+                  <span>Real Madrid</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="{% url 'store:team' club_name='FC Barcelona' %}">
+                  <img src="{% static 'images/La Liga/FC Barcelona.jpg' %}" alt="FC Barcelona">
+                  <span>FC Barcelona</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="{% url 'store:team' club_name='AC Milan' %}">
+                  <img src="{% static 'images/Serie A/AC Milan.jpg' %}" alt="AC Milan">
+                  <span>AC Milan</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="{% url 'store:team' club_name='Juventus FC' %}"> 
+                  <img src="{% static 'images/Serie A/Juventus FC.jpg' %}" alt="Juventus FC">
+                  <span>Juventus FC</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="{% url 'store:team' club_name='Manchester City' %}">
+                  <img src="{% static 'images/Premier League/Manchester City.jpg' %}" alt="B-Jerseys Specials">
+                  <span>Manchester City</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="{% url 'store:team' club_name='Manchester United' %}">
+                  <img src="{% static 'images/Premier League/Manchester United.jpg' %}" alt="Manchester United">
+                  <span>Manchester United</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="{% url 'store:team' club_name='Arsenal FC' %}">
+                  <img src="{% static 'images/Premier League/Arsenal FC.jpg' %}" alt="Arsenal FC">
+                  <span>Arsenal FC</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="{% url 'store:team' club_name='Bayern München' %}">
+                  <img src="{% static 'images/Bundesliga/Bayern München.jpg' %}" alt="Bayern München">
+                  <span>Bayern München</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" href="{% url 'store:team' club_name='Paris Saint Germain' %}">
+                  <img src="{% static 'images/Ligue 1/Paris Saint Germain.jpg' %}" alt="Paris Saint Germain">
+                  <span>Paris Saint Germain</span>
+              </a>
+            </li>
+            <h6 style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">Players</h6>
+            <li class="nav-item">
+                <a class="nav-link active" href="{% url 'store:categories' categorie='Lionel Messi' %}">
+                    <img src="{% static 'images/logos/Lionel Messi.png' %}" alt="Lionel Messi">
+                    <span>Lionel Messi</span>
+                </a>
+            </li>
+            <li class="nav-item">
+              <a  href="{% url 'store:categories' categorie='Cristiano Ronaldo' %}">
+                  <img src="{% static 'images/logos/Cristiano Ronaldo.png' %}" alt="Cristiano Ronaldo ">
+                  <span>Cristiano Ronaldo </span>
+              </a>
+          </li>
+          <hr>
+          
+
+          </ul>
+        </div>
+        
+        </div>
+      </nav>
+      
+      <!-- Content goes here (your main content) -->
+      <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+        <div class="content">
+        {% block content %}
+        {% endblock content %}
+      </div>
+      
+      </main>
+      
+    </div>
+  </div>
+  
+<script>
+  $(document).ready(function() {
+    $('#sidebar-toggler').on('click', function() {
+        $('#sidebar').toggleClass('expanded-sidebar');
+        $('.content').toggleClass('hidden-content');
+    });
+});
+
+</script>
+<style>
+  .login-button{
+    width: 100%;
+    background-color:white;
+    text-align: center;
+  }
+  .expanded-sidebar {
+    width: 100%;
+}
+
+.hidden-content {
+    display: none;
+}
+
+
+.sidebar-sticky {
+    height: 100%;
+    overflow-y: hidden;
+    width: 100%;
+}
+
+.login-logout-section {
+  display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    width: 100%;
+    margin-top: 30px;
+    margin-bottom: 0px;
+    
+}
+
+.scrollable-sidebar-content {
+    height: calc(100% - 100px); /* Adjust the scrollable content height */
+    overflow-y: auto;
+}
+
+    #sidebar {
+      position: fixed;
+      height: 100vh;
+      top: 0;
+      left: 0;
+      
+       /* Adjust the width as needed */
+      padding: 10px;
+      margin-top:20px;
+    }
+    
+    #sidebar .nav-item a img {
+  max-height: 100%; /* Set the image height to match the nav-item height */
+  object-fit: contain; /* Control how the image is displayed */
+  margin-right: 10px;
+  width: 60px;
+}
+    #sidebar .nav-item {
+  margin-bottom: 5px; /* Add spacing between items */
+}
+
+#sidebar .nav-item a {
+  font-size: 12px; /* Set font size for the nav-item */
+  text-decoration: none; /* Remove underline from links */
+  display: flex; /* Use flex to align image and text horizontally */
+  align-items: center; /* Center image and text vertically */
+  color: #333; /* Set default text color for nav-items */
+  padding: 3px; /* Add some padding to nav-items for hover effect */
+  transition: background-color 0.3s; /* Smooth background color transition on hover */
+  height: 30px;
+}
+
+#sidebar .nav-item a:hover {
+  background-color: #e1e0e0; /* Change background color on hover */
+  color: #000; /* Change text color on hover */
+}
+#main{
+margin-left: 250px;
+}
+
+
+#sidebar .nav-item a span {
+  font-size: 14px; /* Set font size for the name */
+  color: #000000 ;
+}
+
+#sidebar a strong {
+  font-size: 14px; /* Set font size for "Teams" and "League" */
+  font-weight: bold; /* Make the text bold */
+  color: #4c4b4b;
+}
+  </style>
+  

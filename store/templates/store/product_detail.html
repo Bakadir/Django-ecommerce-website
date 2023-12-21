@@ -1,0 +1,422 @@
+{% extends 'store/base.html' %}
+{% load static %}
+
+
+{% block content %}
+<br>
+
+<section class="py-5">
+    <div class="container">
+      <div class="row gx-5">
+        <div class="col-lg-6" >
+          <div class="border rounded-4 mb-3  justify-content-center" >
+            
+            <div class="main-image">
+                <div class="image-gallery">
+                <a data-fslightbox="mygallery" data-type="image" class="rounded-4">
+                    <img src="{{ product.photo.url }}"  class="rounded-4 fit" style="width: 100%; height: 500px; object-fit: contain;" id="main-image" />
+                </a>
+                </div>
+                <div class="thumbnail-images">
+                <div class="thumbnail">
+                    <a data-fslightbox="mygallery" data-type="image" onclick="changeImage('{{ product.photo.url }}')">
+                    <img src="{{ product.photo.url }}" class="thumbnail-image" />
+                    </a>
+                </div>
+                {% if product.extra_photos %}
+                <div class="thumbnail">
+                    <a data-fslightbox="mygallery" data-type="image" onclick="changeImage('{{ product.extra_photos.url }}')">
+                    <img src="{{ product.extra_photos.url }}" class="thumbnail-image" />
+                    </a>
+                </div>
+                {% endif %}
+                {% if product.extra_photos2 %}
+                <div class="thumbnail">
+                    <a data-fslightbox="mygallery" data-type="image" onclick="changeImage('{{ product.extra_photos2.url }}')">
+                    <img src="{{ product.extra_photos2.url }}" class="thumbnail-image" />
+                    </a>
+                </div>
+                {% endif %}
+                {% if product.extra_photos3 %}
+                <div class="thumbnail">
+                    <a data-fslightbox="mygallery" data-type="image" onclick="changeImage('{{ product.extra_photos3.url }}')">
+                    <img src="{{ product.extra_photos3.url }}" class="thumbnail-image" />
+                    </a>
+                </div>
+                {% endif %}
+                
+            </div>
+          </div>
+          
+          </div>
+          <script>
+          function changeImage(imageUrl) {
+            const mainImage = document.getElementById('main-image');
+            mainImage.src = imageUrl;
+          }
+          </script>
+          <style>
+            .image-gallery {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.main-image {
+  text-align: center;
+  width: 100%;
+  
+}
+
+.thumbnail-images {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  height: 100px;
+  
+}
+
+.thumbnail {
+  cursor: pointer;
+}
+
+.thumbnail-image {
+  height: 100px;
+  
+  display: block; /* Ensures the image does not overlap with the parent container */
+}
+
+
+          </style>
+        </div>
+
+        <div class="col-lg-6">
+          <div class="ps-lg-3">
+            <div class="nav-item">
+            <a class="nav-link active" href="{% url 'store:team' product.club.name %}"  height="40px">
+                {% if product.club.name == "Italy" or product.club.name == "Argentina" or product.club.name == "Paris Saint Germain" or product.club.name == "Al Nassr FC" %}
+                <img src="{{ product.club.image.url }}" alt="{{ product.club.name }}" class="club-image">
+                {% else %}
+                <img src="{% static product.club.image %}" >
+                {% endif %}
+                <span><strong> {{product.club.name}}</strong></span>
+            </a>
+        </div>
+        <br>
+            <style>
+                .nav-item a img {
+  max-height: 100%; /* Set the image height to match the nav-item height */
+  object-fit: contain; /* Control how the image is displayed */
+  margin-right: 10px;
+  
+}
+    .nav-item {
+  margin-bottom: 5px; /* Add spacing between items */
+}
+
+.nav-item a {
+  font-size: 18px; /* Set font size for the nav-item */
+  text-decoration: none; /* Remove underline from links */
+  display: flex; /* Use flex to align image and text horizontally */
+  align-items: center; /* Center image and text vertically */
+  color: #333; /* Set default text color for nav-items */
+  padding: 3px; /* Add some padding to nav-items for hover effect */
+  transition: background-color 0.3s; /* Smooth background color transition on hover */
+  height: 50px;
+}
+.nav-item a span {
+  font-size: 24px; /* Set font size for the name */
+  color: #000000 ;
+  font: bold;
+}
+            </style>
+            <div class="mb-3">
+              <h5 class="h5">{{product.price}}$</h5>
+              <h6>Season : {{ product.season }} </h6>
+              <h6>{{ product.type }} </h6>
+            </div>
+            <p>{{product.description}} </p>
+            <hr />
+            <form method="post" enctype="multipart/form-data" id="add-to-cart-form">
+              {%csrf_token %}
+            <div class="row mb-4">
+              
+              <div class="size-options">
+                  <label for="selected-size">Size:</label>
+                  <div class="size-box" id="size-XS" data-size="XS">XS</div>
+                  <div class="size-box" id="size-S" data-size="S">S</div>
+                  <div class="size-box" id="size-M" data-size="M">M</div>
+                  <div class="size-box" id="size-L" data-size="L">L</div>
+                  <div class="size-box" id="size-XL" data-size="XL">XL</div>
+                  <input type="hidden" id="selected-size" name="selected_size" value="">
+              </div>
+                <br>
+              <div class="quantity-selector">
+                  <label for="quantity">Quantity:</label>
+                  <button id="minus-quantity">-</button>
+                  <input type="number" id="quantity" min="1" value="1" name="quantity">
+                  <button id="plus-quantity">+</button>
+              </div>
+                <br>
+                <br>
+                <br>
+                <br>
+                <button id="add-to-cart-button" type="submit" class="btn btn-outline-secondary " formmethod="post" name="addcommande">Add to Cart</button>
+                <style>
+                    #add-to-cart-button {
+                        background-color: black; /* Set the initial background color to black */
+                        color: white; /* Set the text color to white */
+                        border: none; /* Remove the button border */
+                        height: 50px;
+                    }
+                
+                    #add-to-cart-button:hover {
+                        background-color: rgb(79, 79, 79); /* Change the background color on hover (you can change 'red' to the color you prefer) */
+                        color: white; /* Maintain the text color on hover */
+                    }
+                </style>
+            </div>
+            <h4 class="title text-dark">Already in Basket:</h4>
+            
+            <div class="table-responsive">
+              <table class="table">
+                  <thead>
+                      <tr class="cart-row">
+                          <th align="center" >item</th>
+                          <th align="center" >Size</th>
+                          <th align="center" >Quantity</th>
+                          <th align="center" >Total</th>
+                          <th align="center" ></th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      {% for item in related_items %}
+                      <tr class="cart-row custom-cart-row">
+                          <td class="custom-cart-image col-lg-2">
+                              <a><img src="{{ item.product.imageURL }}"></a>
+                          </td>
+                          <td class="custom-cart-size col-lg-2"  valign="middle">
+                              <p>{{ item.size }}</p>
+                          </td>
+                          <td class="custom-cart-quantity col-lg-2" valign="middle">
+                              <p>x{{ item.quantity }}</p>
+                          </td>
+                          <td class="custom-cart-total col-lg-2" valign="middle">
+                              <p>{{ item.get_total|floatformat:2 }}$</p>
+                          </td>
+                          <td class="custom-cart-delete col-lg-1" align="right" valign="top">
+                              <button class="btn btn-danger delete-cart-button" data-item="{{ item.product.club.name }}-{{ item.size }}-{{ item.quantity }}" formmethod="post" name="delete">X</button>
+                          </td>
+                      </tr>
+                      {% endfor %}
+                  </tbody>
+              </table>
+          </div>
+        </form>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function() {
+    $(".delete-cart-button").on("click", function(event) {
+        event.preventDefault(); // Prevent the form from submitting
+        var itemData = $(this).data("item").split("-"); // Split the item data
+        var productId = itemData[0];
+        var size = itemData[1];
+        var quantity = itemData[2];
+        var csrftoken = $("[name=csrfmiddlewaretoken]").val();
+
+        $.ajax({
+            type: "POST",
+            url: "{% url 'store:product_detail' club_name=club_slug season=product.season type=product.type %}",
+            data: {
+                item: productId,  // Send the product ID
+                size: size,  // Send the size
+                quantity: quantity,  // Send the quantity
+                delete: true,  // Include the delete key
+                csrfmiddlewaretoken: csrftoken,
+            },
+            success: function(response) {
+                location.reload();
+            },
+            error: function(xhr, errmsg, err) {
+                // Handle errors here
+            },
+        });
+    });
+});
+
+
+</script>
+          </div>
+        </main>
+      </div>
+    </div>
+
+  </section>
+
+<script>
+
+      const sizeBoxes = document.querySelectorAll('.size-box');
+
+      sizeBoxes.forEach((sizeBox) => {
+          sizeBox.addEventListener('click', () => {
+              // Remove the "selected" class from all size boxes
+              sizeBoxes.forEach((box) => box.classList.remove('selected'));
+              // Add the "selected" class to the clicked size box
+              sizeBox.classList.add('selected');
+              // Set the selected size in the hidden input field
+              document.getElementById('selected-size').value = sizeBox.getAttribute('data-size');
+          });
+      });
+
+      // Quantity Selector
+      const minusQuantity = document.getElementById('minus-quantity');
+      const plusQuantity = document.getElementById('plus-quantity');
+      const quantityInput = document.getElementById('quantity');
+
+      minusQuantity.addEventListener('click', () => {
+          event.preventDefault();
+          let currentQuantity = parseInt(quantityInput.value, 10);
+          if (currentQuantity > 1) {
+              quantityInput.value = currentQuantity - 1;
+          }
+      });
+
+      plusQuantity.addEventListener('click', () => {
+          event.preventDefault();
+          let currentQuantity = parseInt(quantityInput.value, 10);
+          quantityInput.value = currentQuantity + 1;
+      });
+      const addToCartButton = document.getElementById('add-to-cart-button');
+
+      const addToCartForm = document.getElementById('add-to-cart-form');
+    addToCartButton.addEventListener('submit', () => {
+      event.preventDefault();
+      const isAddCommandeClicked = event.submitter.name === "addcommande";
+      if (isAddCommandeClicked) {
+        
+        const selectedSize = document.getElementById('selected-size').value;
+        const selectedQuantity = parseInt(quantityInput.value, 10);
+        const csrftoken = document.querySelector("[name=csrfmiddlewaretoken]").value;
+        
+        fetch("{% url 'store:product_detail' club_name=club_slug season=product.season type=product.type %}", {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrftoken, 
+                'Content-Type': 'application/json',
+                
+            },
+            body: JSON.stringify({
+                size: selectedSize,
+                quantity: selectedQuantity,
+            }),
+        })
+        .then((response) => {
+          location.reload();
+        })
+        .catch((error) => {
+            // Handle any errors location.reload()
+        });
+
+      }
+    });
+    
+</script>
+<style>
+  .custom-cart-row {
+    position: relative;
+}
+
+.custom-cart-delete {
+    position: absolute;
+    top: 0;
+    right: 30px;
+    height: 5px;
+    width: 5px;
+    padding: 1px; /* Add padding for space */
+}
+.custom-cart-row {
+    background-color: #f5f5f5; /* Set the background color for cart rows */
+    /* Add padding to the rows for spacing */
+    margin-bottom: 10px;
+    border: 1px solid #ccc; /* Add a border to separate rows */
+    height: 100px;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+ 
+}
+
+.custom-cart-image img {
+    height: 80px; /* Limit the maximum width of images */
+}
+
+.custom-cart-details a {
+    color: #333; /* Change the text color for details */
+    text-decoration: none; /* Remove underlines from links */
+    align-items: center;
+    vertical-align: middle;
+}
+
+.size-options {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.size-box {
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    border: 1px solid black;
+    text-align: center;
+    line-height: 35px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.size-box.selected {
+    background-color: black;
+    color: white;
+}
+.size-box:hover {
+    background-color: #999;
+    color: white;
+}
+/* Quantity Selector */
+.quantity-selector {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    
+}
+
+label {
+    margin-right: 40px;
+    font-family: AdihausDIN, Arial, Helvetica, sans-serif;
+}
+
+#quantity {
+    width: 100px;
+    text-align: center;
+    
+    height: 40px;
+}
+
+#plus-quantity, #minus-quantity {
+    width: 40px;
+    height: 40px;
+    background-color: #ccc;
+    border: 1px solid #999;
+    cursor: pointer;
+}
+
+#plus-quantity:hover, #minus-quantity:hover {
+    background-color: #999;
+    color: white;
+}
+
+</style>
+
+
+
+{% endblock content %}

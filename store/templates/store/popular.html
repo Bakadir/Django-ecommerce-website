@@ -1,0 +1,87 @@
+{% extends 'store/base.html' %}
+{% load static %}
+
+
+{% block content %}
+<br>
+<br>
+<div class="container">
+    <div class="row justify-content-center align-items-center" >
+        {% for product in products %}
+        
+        <div class="col-lg-3 col-md-6 mb-4 " >
+            
+            <div class="club_products-container">
+                <a href="{{ product.get_absolute_url }}">
+                    <img src="{{ product.photo.url }}" alt="{{ product.name }}" class="product-image">
+                    
+                </a>
+                
+                <div class="product-details">
+                    <h4 class="product-name" align="middle">{{ product.club.name }}</h4>
+                    <h3 class="product-season" align="middle">{{ product.season }} {{ product.type }} </h3>
+                    <h2 class="product-price" align="middle">{{product.price}}$</h2>
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        {% endfor %}
+        
+    </div>
+</div>
+<style>
+    .club_products-container {
+        margin-bottom: 30px;
+        
+        padding: 10px;
+        width: 240px;
+        height: 350px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+  
+        
+    }
+    .club_products-image {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+    .club_products-container:hover {
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        transform: scale(1.05);
+    }
+
+    .product-image {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+        transition: transform 0.3s ease;
+    }
+  
+    .product-container:hover .product-image {
+        transform: scale(1.1);
+    }
+  
+    .product-name {
+        font-size: 16px;
+        font-weight: bold;
+        margin-top: 10px;
+        margin-bottom: 2px;
+    }
+    .product-season {
+        font-size: 14px;
+        font-weight: bold;
+        color: rgb(135, 135, 135);
+        margin-bottom: 2px;
+    }
+    .product-price {
+        font-size: 14px;
+        color: rgb(0, 0, 0);
+        margin-top: 5px;
+    }
+</style>
+
+{% endblock content %}

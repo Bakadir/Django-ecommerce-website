@@ -1,0 +1,100 @@
+{% extends 'store/base.html' %}
+{% load static %}
+
+
+{% block content %}
+<br>
+<br>
+<div class="container">
+    <div class="row justify-content-center align-items-center" >
+        <div class="col-lg-4 col-md-4 mb-4" align="middle">
+            {% if club.name == "Italy" or club.name == "Argentina" or club.name == "Paris Saint Germain" or club.name == "Al Nassr FC"%}
+            <img src="{{ club.image.url }}" alt="{{ club.name }}" class="club-image">
+            {% elif player == "messi" %}
+            <img src="{% static 'images/logos/Lionel Messi.png' %}" alt="{{ Messi }}" class="club-image">
+            {% else %}
+            <img src="{% static club.image %}" alt="{{ club.name }}" class="club-image">
+            {% endif %}
+            <h4 class="club-name" style="font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;">{{ club.name }}</h4>
+        </div>
+        <br>
+        <br>
+        {% for season,products in data %}
+        <h2 style="background-color: rgb(237, 237, 237); font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;" align="center" >Season: {{ season }}</h2>
+        <div class="row justify-content-center align-items-center">
+            {% for product in products %}
+            <a href="{{ product.get_absolute_url }}" class="col-lg-3 col-md-4 col-6 mb-4">
+                <div class="product-container">
+                    <img src="{{ product.photo.url }}" alt="{{ product.name }}" class="product-image img-fluid" >
+                    <div class="product-details">
+                        <h4 class="mb-0" align="middle">{{ product.club.name }}</h4>
+                        <h3 class="mb-0" align="middle">{{ product.season }} {{ product.type }} </h3>
+                        <h2 class="mb-0" align="middle">{{product.price}}$</h2>
+                    </div>
+                    
+                </div>
+                
+            </a>
+            {% endfor %}
+        </div>
+        
+        {% endfor %}
+        
+    </div>
+</div>
+<style>
+    .product-container {
+        background-size: cover;
+        width: 100%;
+        height: 300px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border-radius: var(--border-radius-medium);
+        position: relative;
+        overflow: hidden;
+  
+        
+    }
+  
+    .product-container:hover .product-details {
+        border-color: var(--primary-color);
+        border-width: 5px;
+    }
+    .product-container:hover .product-image {
+        transform: scale(1.05);
+        }
+    .product-details {
+        position: absolute;
+        background-color: rgb(255, 255, 255);
+        bottom: 0;
+        right: 0;
+        left: 0;
+        
+        transition: all 0.3s ease;
+        }
+    .product-image {
+        border-radius: var(--border-radius-medium);
+        display: block;
+        width: 100%;
+        
+        transition: all 0.3s;
+    }
+  
+  
+    .product-details h4 {
+        color: rgb(0, 0, 0);
+        font-size: 18px;
+        font-weight: bold;
+        }
+        .product-details h3 {
+        color: rgb(164, 164, 164);
+        font-size: 16px;
+        font-weight: bold;
+        }
+    
+        .product-details h2 {
+        color: rgb(0, 0, 0);
+        font-size: 16px;
+        font-weight: bold;
+        }
+</style>
+{% endblock content %}

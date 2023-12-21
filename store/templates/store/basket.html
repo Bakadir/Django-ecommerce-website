@@ -1,0 +1,307 @@
+{% extends 'store/base.html' %}
+{% load static %}
+
+
+{% block content %}
+<br>
+<br>
+
+
+<div class="container">
+<div class="row" >
+    <div class="col-lg-6" >
+        <div class="box-element">
+            <p>Please enter your shipping details:</p>
+            <hr>
+            <form method="post" enctype="multipart/form-data">
+                {%csrf_token %}
+            <div class="form" >
+              
+                <div class="fields fields--2">
+                    <label class="field">
+                        <span class="field__label" for="firstname">First name<a style="color: red;">&nbsp;*</a></span>
+                        <input class="field__input" type="text" id="firstname" name="firstname" required/>
+                    </label>
+                    <label class="field">
+                        <span class="field__label" for="lastname">Last name</span>
+                        <input class="field__input" type="text" id="lastname" name="lastname"/>
+                    </label>
+                </div>
+                <label class="field">
+                    <span class="field__label" for="phone_number">Phone Number</span>
+                    <input class="field__input" type="tel" id="phone_number" name="phone_number"/>
+                </label>
+
+                <label class="field">
+                    <span class="field__label" for="email">Email<a style="color: red;">&nbsp;*</a></span>
+                    <input class="field__input" type="email" id="email" name="email" required/>
+                </label>
+                
+                
+                
+                <div class="fields fields--3">
+                    <label class="field">
+                        <span class="field__label" for="country">Country<a style="color: red;">&nbsp;*</a></span>
+                        <input class="field__input" type="text" id="country"  name="country" required/>
+                        
+                    </label>
+                    <label class="field">
+                        <span class="field__label" for="zipcode">Zip code</span>
+                        <input class="field__input" type="text" id="zipcode" name="zipcode" />
+                    </label>
+                    <label class="field">
+                        <span class="field__label" for="city">City<a style="color: red;">&nbsp;*</a></span>
+                        <input class="field__input" type="text" id="city" name="city" required/>
+                    </label>
+                </div>
+                <label class="field" >
+                    <span class="field__label" for="address">Address<a style="color: red;">&nbsp;*</a></span>
+                    <input class="field__input" type="text" id="address" name="address" required>
+                </label>
+                <div class="fields fields--3">
+                <label class="field" >
+                    <span class="field__label" for="address">Add Promo Code</span>
+                    <input class="field__input" type="text" id="promocode" name="promocode" >
+                </label>
+            </div>
+                
+                <button id="buy_now_btn" class="button_continue" type="submit" formmethod="post" name="continue">Pay Now</button>
+                <br>
+                <br>
+            </div>
+            </form>
+        </div>
+    </div>
+    
+            <style>
+                @import url("https://rsms.me/inter/inter.css");
+
+                :root {
+                --color-gray: #737888;
+                --color-lighter-gray: #e3e5ed;
+                --color-light-gray: #f7f7fa;
+                }
+
+                *:before,
+                *:after {
+                box-sizing: inherit;
+                }
+                .form {
+                display: grid;
+                grid-gap: 1rem;
+                }
+
+                .field {
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                border: 1px solid var(--color-lighter-gray);
+                padding: .3rem;
+                border-radius: .25rem;
+                }
+
+                .field__label {
+                
+                font-weight: bold;
+                font-size: 0.6rem;
+                
+                text-transform: uppercase;
+                margin-bottom: 0.25rem
+                }
+
+                .field__input {
+                padding: 0;
+                margin: 0;
+                border: 0;
+                outline: 0;
+                
+                font-size: 1rem;
+                font-weight: bold;
+                width: 100%;
+                
+                }
+                .field:focus-within {
+                border-color: #000;
+                }
+
+                .fields {
+                display: grid;
+                grid-gap: 1rem;
+                }
+                .fields--2 {
+                grid-template-columns: 1fr 1fr;
+                }
+                .fields--3 {
+                grid-template-columns: 1fr 1fr 1fr;
+                }
+                .button_continue {
+                background-color: #000;
+                text-transform: uppercase;
+                font-size: 0.8rem;
+                font-weight: 600;
+                display: block;
+                color: #fff;
+                width: 100%;
+                padding: 1rem;
+                border-radius: 0.25rem;
+                border: 0;
+                cursor: pointer;
+                outline: 0;
+                }
+                .button_continue:focus-visible {
+                background-color: #333;
+                }
+
+            </style>
+        
+
+    <div class="col-lg-6">
+        <div class="box-element" >
+            
+            <a  class="btn btn-outline-dark" href="{% url 'store:home' %}">&#x2190; Back to Shopping</a>
+            
+            <hr>
+            <h4>Summary</h4>
+            <hr>
+              <table class="table">
+                    <tr>
+                        <th align="center">Item</th>
+                        <th align="center">Size</th>
+                        <th align="center">Price</th>
+                        <th align="center">Quantity</th>
+                        <th align="center">Total</th>
+                        <th align="center"></th>
+                    </tr>
+                    {% for item in items %}
+                    <tr>
+                        <td class=" custom-cart-image">
+                            <a><img src="{{ item.product.imageURL }}"></a>
+                        </td>
+                        <td valign="middle">
+                            <p>{{ item.size }}</p>
+                        </td>
+                        <td valign="middle">
+                            <p>{{ item.product.price }}$</p>
+                        </td>
+                        <td valign="middle">
+                            <p>x{{ item.quantity }}</p>
+                        </td>
+                        <td valign="middle">
+                            <p>{{ item.get_total }}$</p>
+                        </td>
+                        <td align="right" valign="bottom">
+                            <a href="{{ item.product.get_absolute_url }}">Edit</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+            </table>
+            <h6>Items:   {{order.get_cart_items}}</h6>
+            <h6>Total:   ${{order.get_cart_total|floatformat:2}}</h6>
+            <h6 style="color: green;">*Free Shipping Worldwide</h6>
+            
+        </div>
+    </div>
+</div>
+</div>
+
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+    const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+    var stripe = Stripe("");
+    const buy_now_button = document.getElementById("buy_now_btn")
+
+    buy_now_button.addEventListener('click', event => {   
+        event.preventDefault();
+        const inputs = document.querySelectorAll('input');
+
+    // Flag to check if all fields are valid
+    let isValid = true;
+
+    // Check each input for validity
+    inputs.forEach(input => {
+        if (input.hasAttribute('required') && !input.value.trim()) {
+            // Add error handling logic here (e.g., add a class to highlight the empty field)
+            input.classList.add('error');
+            isValid = false;
+        } else {
+            input.classList.remove('error');
+        }
+    });
+    
+    if (isValid) {
+        const formData = {
+        firstname: document.getElementById('firstname').value,
+        lastname: document.getElementById('lastname').value,
+        email: document.getElementById('email').value,
+        phone_number: document.getElementById('phone_number').value,
+        country: document.getElementById('country').value,
+        zipcode: document.getElementById('zipcode').value,
+        country: document.getElementById('country').value,
+        city: document.getElementById('city').value,
+        address: document.getElementById('address').value,
+        promocode: document.getElementById('promocode').value,
+        };
+        fetch("{% url 'store:create_checkout_session' %}", {
+            method: "POST",
+            headers: {
+                'X-CSRFToken': csrftoken,
+                'Content-Type': 'application/json',
+            },
+            
+            body: JSON.stringify({ formData,action: 'creditcard' }), // Add this line to specify the action
+        })
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (data) {
+            // Check if the response contains the Session ID
+            if (data && data.id) {
+                // Redirect the user to the Stripe Checkout page
+                stripe.redirectToCheckout({ sessionId: data.id });
+            } else {
+                console.error("Session ID not found in response data");
+            }
+        })
+        .catch(function (error) {
+            console.error("Error:", error);
+        });
+    }
+    });
+    </script>
+
+<style >
+    .custom-cart-edit {
+        align-self: flex-end;
+        margin-bottom: 10px;
+    }
+    .custom-cart-row {
+        position: relative;
+    }
+
+    .custom-cart-row {
+        background-color: #f5f5f5; /* Set the background color for cart rows */
+        /* Add padding to the rows for spacing */
+        margin-bottom: 5px;
+        border: 1px solid #ccc; /* Add a border to separate rows */
+        height: 100px;
+        align-items: center;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
+
+    .custom-cart-image img {
+        height: 80px; /* Limit the maximum width of images */
+    }
+
+    .custom-cart-details a {
+        color: #333; /* Change the text color for details */
+        text-decoration: none; /* Remove underlines from links */
+        align-items: center;
+        vertical-align: middle;
+    }
+        
+        
+        
+        </style>
+        
+{% endblock content %}
